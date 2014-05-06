@@ -22,14 +22,14 @@ const flashesKey = "_flash"
 //
 // Fields are a subset of http.Cookie fields.
 type Options struct {
-	Path   string
-	Domain string
+	Path   string	`json:"path"`
+	Domain string	`json:"domain"`
 	// MaxAge=0 means no 'Max-Age' attribute specified.
 	// MaxAge<0 means delete cookie now, equivalently 'Max-Age: 0'.
 	// MaxAge>0 means Max-Age attribute present and given in seconds.
-	MaxAge   int
-	Secure   bool
-	HttpOnly bool
+	MaxAge   int	`json:"originalMaxAge"`
+	Secure   bool	`json:"secure"`
+	HttpOnly bool	`json:"httpOnly"`
 }
 
 // Session --------------------------------------------------------------------
@@ -37,7 +37,7 @@ type Options struct {
 // NewSession is called by session stores to create a new session instance.
 func NewSession(store Store, name string) *Session {
 	return &Session{
-		Values: make(map[interface{}]interface{}),
+		Values: make(map[string]interface{}),
 		store:  store,
 		name:   name,
 	}
@@ -46,7 +46,7 @@ func NewSession(store Store, name string) *Session {
 // Session stores the values and optional configuration for a session.
 type Session struct {
 	ID      string
-	Values  map[interface{}]interface{}
+	Values  map[string]interface{}
 	Options *Options
 	IsNew   bool
 	store   Store
